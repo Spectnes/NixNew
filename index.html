@@ -1,334 +1,134 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NixPs - Home</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Press Start 2P', cursive;
-            background-color: #000;
-            color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(40, 40, 40, 0.1) 0%, rgba(0,0,0,0) 20%),
-                radial-gradient(circle at 90% 80%, rgba(60, 60, 60, 0.1) 0%, rgba(0,0,0,0) 20%);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        
-        header {
-            text-align: center;
-            padding: 40px 0;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .logo {
-            font-size: 4rem;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            letter-spacing: 5px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            animation: glow 2s ease-in-out infinite alternate;
-            position: relative;
-        }
-        
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 5px #fff, 0 0 10px #fff;
-            }
-            to {
-                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073;
-            }
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            color: #aaa;
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-        }
-        
-        .subtitle::after {
-            content: '';
-            display: block;
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #fff, transparent);
-            margin: 15px auto;
-        }
-        
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px 0;
-        }
-        
-        .cta-text {
-            font-size: 1.5rem;
-            margin-bottom: 50px;
-            max-width: 800px;
-            line-height: 1.6;
-            color: #ddd;
-        }
-        
-        .links-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
-        }
-        
-        .link-card {
-            width: 280px;
-            height: 160px;
-            perspective: 1000px;
-            cursor: pointer;
-        }
-        
-        .link-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-        }
-        
-        .link-card:hover .link-card-inner {
-            transform: rotateY(180deg);
-        }
-        
-        .link-card-front, .link-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-        }
-        
-        .link-card-front {
-            background: linear-gradient(135deg, #222, #000);
-            border: 2px solid #444;
-        }
-        
-        .link-card-back {
-            background: linear-gradient(135deg, #111, #000);
-            border: 2px solid #666;
-            transform: rotateY(180deg);
-        }
-        
-        .whatsapp-front {
-            background: linear-gradient(135deg, #222, #075e54);
-        }
-        
-        .discord-front {
-            background: linear-gradient(135deg, #222, #5865F2);
-        }
-        
-        .link-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: #fff;
-        }
-        
-        .link-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-        
-        .link-desc {
-            font-size: 0.8rem;
-            color: #bbb;
-        }
-        
-        .link-btn {
-            font-family: 'Press Start 2P', cursive;
-            background: #000;
-            color: #fff;
-            border: 2px solid #fff;
-            padding: 10px 20px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 10px;
-        }
-        
-        .link-btn:hover {
-            background: #fff;
-            color: #000;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
-        }
-        
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            font-size: 0.7rem;
-            color: #777;
-            border-top: 1px solid #333;
-            margin-top: 30px;
-        }
-        
-        .pixel-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.05;
-        }
-        
-        .pixel {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background-color: #fff;
-            animation: pixelGlow 2s infinite;
-        }
-        
-        @keyframes pixelGlow {
-            0% { opacity: 0.1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 0.1; }
-        }
-        
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 2.5rem;
-            }
-            
-            .subtitle {
-                font-size: 0.9rem;
-            }
-            
-            .cta-text {
-                font-size: 1rem;
-            }
-            
-            .links-container {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>NixPs - Welcome</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Fonts: Minecraft-like and Open Sans -->
+  <!-- You may want to download and host the Minecrafter font for production use -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gray-bg: #f2f2f2;
+      --gray-dark: #232323;
+      --gray-medium: #444;
+      --gray-btn-hover: #383838;
+      --white: #fff;
+    }
+
+    body {
+      background: var(--gray-bg);
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+      color: var(--gray-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      background: transparent;
+      padding: 48px 32px;
+      border-radius: 18px;
+      box-shadow: 0 2px 16px 0 rgba(44,44,44,0.04);
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeInUp 1.1s cubic-bezier(.23,1.01,.31,1) 0.1s forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .title {
+      font-family: 'Press Start 2P', 'Courier New', Courier, monospace;
+      font-size: 2.4rem;
+      color: var(--gray-dark);
+      margin-bottom: 18px;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 0 #fff, 2px 2px 0 #bbb;
+      user-select: none;
+    }
+
+    .subtitle {
+      font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+      font-size: 1.1rem;
+      color: var(--gray-medium);
+      margin-bottom: 36px;
+      font-weight: 400;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background: var(--gray-dark);
+      color: var(--white);
+      font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      padding: 16px 32px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+      transition: background 0.18s, box-shadow 0.18s, transform 0.14s;
+      outline: none;
+      text-decoration: none;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      display: inline-block;
+    }
+
+    .btn:hover, .btn:focus {
+      background: var(--gray-btn-hover);
+      box-shadow: 0 4px 16px rgba(44,44,44,0.14);
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 20px 6px;
+      }
+      .title {
+        font-size: 1.3rem;
+      }
+      .subtitle {
+        font-size: 0.95rem;
+      }
+      .btn {
+        padding: 13px 14px;
+        font-size: 0.97rem;
+      }
+      .btn-group {
+        gap: 12px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Background pixel animation -->
-    <div class="pixel-grid" id="pixelGrid"></div>
-    
-    <div class="container">
-        <header>
-            <h1 class="logo">NixPs</h1>
-            <p class="subtitle">Connect • Create • Conquer</p>
-        </header>
-        
-        <main class="main-content">
-            <div class="cta-text">
-                JOIN OUR COMMUNITY AND UNLOCK NEW POSSIBILITIES. COLLABORATE, LEARN, AND GROW WITH LIKE-MINDED INDIVIDUALS IN A DYNAMIC DIGITAL SPACE.
-            </div>
-            
-            <div class="links-container">
-                <div class="link-card">
-                    <div class="link-card-inner">
-                        <div class="link-card-front whatsapp-front">
-                            <i class="link-icon fab fa-whatsapp"></i>
-                            <h3 class="link-title">WhatsApp Group</h3>
-                            <p class="link-desc">Instant messaging community</p>
-                        </div>
-                        <div class="link-card-back">
-                            <p class="link-desc">Join our active WhatsApp community for real-time discussions and updates</p>
-                            <a href="https://chat.whatsapp.com/Gu52O2ThipG4uWzuJlym93?mode=ac_t" class="link-btn" target="_blank">JOIN NOW</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="link-card">
-                    <div class="link-card-inner">
-                        <div class="link-card-front discord-front">
-                            <i class="link-icon fab fa-discord"></i>
-                            <h3 class="link-title">Discord Server</h3>
-                            <p class="link-desc">Gaming & collaboration hub</p>
-                        </div>
-                        <div class="link-card-back">
-                            <p class="link-desc">Connect with us on Discord for gaming sessions, voice chats, and collaboration</p>
-                            <a href="https://discord.gg/JMth4dqx" class="link-btn" target="_blank">JOIN NOW</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-        
-        <footer>
-            <p>© 2023 NixPs Community | All Rights Reserved</p>
-            <p>Designed with <span style="color:#f00;">♥</span> for gamers and creators</p>
-        </footer>
+  <main class="container">
+    <div class="title">Welcome to NixPs</div>
+    <div class="subtitle">Join our community on WhatsApp and Discord</div>
+    <div class="btn-group">
+      <a class="btn" href="https://chat.whatsapp.com/Gu52O2ThipG4uWzuJlym93?mode=ac_t" target="_blank" rel="noopener noreferrer">
+        Join WhatsApp Group
+      </a>
+      <a class="btn" href="https://discord.gg/JMth4dqx" target="_blank" rel="noopener noreferrer">
+        Join Discord Server
+      </a>
     </div>
-
-    <script>
-        // Create pixel grid background
-        function createPixelGrid() {
-            const grid = document.getElementById('pixelGrid');
-            const pixelCount = 150;
-            
-            for (let i = 0; i < pixelCount; i++) {
-                const pixel = document.createElement('div');
-                pixel.classList.add('pixel');
-                
-                // Random position
-                const left = Math.random() * 100;
-                const top = Math.random() * 100;
-                pixel.style.left = `${left}%`;
-                pixel.style.top = `${top}%`;
-                
-                // Random animation delay
-                const delay = Math.random() * 5;
-                pixel.style.animationDelay = `${delay}s`;
-                
-                grid.appendChild(pixel);
-            }
-        }
-        
-        // Initialize on page load
-        window.addEventListener('load', createPixelGrid);
-    </script>
+  </main>
 </body>
 </html>
