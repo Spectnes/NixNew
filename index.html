@@ -646,26 +646,26 @@
     <section class="download" id="download">
         <div class="container">
             <h2 class="section-title">Download Game</h2>
-            <p>Download client NixPS dan mulai petualanganmu sekarang juga!</p>
+            <p>Game client sedang dalam tahap pengembangan. Stay tuned untuk update terbaru!</p>
             
             <div class="download-cards">
                 <div class="download-card">
                     <h3>🪟 Windows</h3>
                     <p>Compatible dengan Windows 7, 8, 10, dan 11</p>
-                    <p><strong>Size:</strong> 45.2 MB</p>
-                    <a href="#" class="download-btn">Download untuk Windows</a>
+                    <p><strong>Status:</strong> Coming Soon</p>
+                    <div class="coming-soon-btn" style="background: rgba(255, 255, 255, 0.1); color: #ccc; padding: 12px 25px; border-radius: 8px; font-weight: bold; display: inline-block; margin-top: 1rem; cursor: not-allowed;">Coming Soon</div>
                 </div>
                 <div class="download-card">
                     <h3>🤖 Android</h3>
                     <p>Untuk Android 5.0 ke atas</p>
-                    <p><strong>Size:</strong> 38.7 MB</p>
-                    <a href="#" class="download-btn">Download untuk Android</a>
+                    <p><strong>Status:</strong> Coming Soon</p>
+                    <div class="coming-soon-btn" style="background: rgba(255, 255, 255, 0.1); color: #ccc; padding: 12px 25px; border-radius: 8px; font-weight: bold; display: inline-block; margin-top: 1rem; cursor: not-allowed;">Coming Soon</div>
                 </div>
                 <div class="download-card">
                     <h3>🍎 iOS</h3>
                     <p>Untuk iOS 12.0 ke atas</p>
-                    <p><strong>Size:</strong> 42.1 MB</p>
-                    <a href="#" class="download-btn">Download untuk iOS</a>
+                    <p><strong>Status:</strong> Coming Soon</p>
+                    <div class="coming-soon-btn" style="background: rgba(255, 255, 255, 0.1); color: #ccc; padding: 12px 25px; border-radius: 8px; font-weight: bold; display: inline-block; margin-top: 1rem; cursor: not-allowed;">Coming Soon</div>
                 </div>
             </div>
         </div>
@@ -866,8 +866,63 @@
             }, 3000);
         }
 
+        // Create floating particles for background
+        function createFloatingParticle() {
+            const particle = document.createElement('div');
+            const size = Math.random() * 6 + 2; // 2-8px
+            const colors = ['rgba(0, 255, 136, 0.2)', 'rgba(0, 212, 255, 0.2)', 'rgba(255, 107, 107, 0.15)'];
+            
+            particle.style.cssText = `
+                position: fixed;
+                width: ${size}px;
+                height: ${size}px;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 1;
+                animation: floatingParticle ${Math.random() * 10 + 15}s linear infinite;
+            `;
+            
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.top = '100vh';
+            
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 25000);
+        }
+
+        // Create small twinkling stars
+        function createTwinkle() {
+            const star = document.createElement('div');
+            const size = Math.random() * 3 + 1; // 1-4px
+            
+            star.style.cssText = `
+                position: fixed;
+                width: ${size}px;
+                height: ${size}px;
+                background: rgba(255, 255, 255, 0.8);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 1;
+                animation: twinkle 3s ease-in-out infinite;
+            `;
+            
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            
+            document.body.appendChild(star);
+            
+            setTimeout(() => {
+                star.remove();
+            }, 3000);
+        }
+
         // Create particles periodically
         setInterval(createParticle, 500);
+        setInterval(createFloatingParticle, 800);
+        setInterval(createTwinkle, 2000);
 
         // Add particle animation CSS
         const particleStyle = document.createElement('style');
@@ -880,6 +935,34 @@
                 100% {
                     transform: translateY(-100vh) rotate(360deg);
                     opacity: 0;
+                }
+            }
+            
+            @keyframes floatingParticle {
+                0% {
+                    transform: translateY(0) translateX(0) rotate(0deg);
+                    opacity: 0;
+                }
+                10% {
+                    opacity: 1;
+                }
+                90% {
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(-100vh) translateX(${Math.random() * 200 - 100}px) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+            
+            @keyframes twinkle {
+                0%, 100% {
+                    opacity: 0;
+                    transform: scale(0.5);
+                }
+                50% {
+                    opacity: 1;
+                    transform: scale(1.2);
                 }
             }
         `;
