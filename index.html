@@ -1,1 +1,832 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NixPS - Private Server Community</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #fff;
+            background: #0a0a0a;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #1e3c72, #2a5298, #1a1a2e, #16213e);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Header */
+        header {
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid #00ff88;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: #00ff88;
+            text-shadow: 0 0 20px #00ff88;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 30px #00ff88;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 150px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00ff88, #00d4ff, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: slideUp 1s ease forwards;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: slideUp 1s ease 0.3s forwards;
+        }
+
+        .server-status {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-bottom: 2rem;
+            border: 2px solid #00ff88;
+            opacity: 0;
+            animation: slideUp 1s ease 0.6s forwards;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #00ff88;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: slideUp 1s ease 0.9s forwards;
+        }
+
+        .cta-button {
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #000;
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid #00ff88;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: #00ff88;
+            position: relative;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #00ff88, #00d4ff, #ff6b6b);
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #00ff88;
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .feature-card p {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        /* Links Section */
+        .links {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .link-card {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .link-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .wa-btn, .discord-btn {
+            transition: all 0.3s ease;
+        }
+
+        .wa-btn:hover, .discord-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Download Section */
+        .download {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .download-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .download-card {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .download-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ff88;
+            box-shadow: 0 15px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .download-card h3 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #000;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(26, 26, 46, 0.9);
+            padding: 3rem 0 2rem;
+            border-top: 2px solid #00ff88;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            line-height: 1.8;
+        }
+
+        .footer-section a:hover {
+            color: #00ff88;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0, 255, 136, 0.3);
+            color: #ccc;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .features-grid,
+            .links-grid,
+            .download-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #00d4ff, #ff6b6b);
+        }
+
+        /* Loading Screen */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-logo {
+            font-size: 3rem;
+            color: #00ff88;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 30px #00ff88;
+            animation: pulse 2s infinite;
+        }
+
+        .loading-text {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 6px;
+            background: rgba(0, 255, 136, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00d4ff);
+            border-radius: 3px;
+            animation: loading 1s ease-out forwards;
+        }
+
+        @keyframes loading {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation"></div>
+
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="loading-content">
+            <div class="loading-logo">🌱 NixPS</div>
+            <div class="loading-text">Loading Private Server...</div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">🌱 NixPS</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#links">Community</a></li>
+                <li><a href="#download">Download</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>NixPS Private Server</h1>
+                <p>Bergabunglah dengan komunitas Growtopia terbesar di Indonesia! Nikmati pengalaman bermain yang lebih seru dengan fitur-fitur eksklusif dan community yang aktif.</p>
+                
+                <div class="server-status">
+                    <span class="status-dot"></span>
+                    <strong>Server Online</strong>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="#download" class="cta-button btn-primary">Download Sekarang</a>
+                    <a href="#links" class="cta-button btn-secondary">Join Community</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Fitur Unggulan</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Server Stabil 24/7</h3>
+                    <p>Server dengan uptime 99.9% yang selalu online tanpa gangguan. Nikmati permainan yang lancar tanpa lag!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎁</div>
+                    <h3>Daily Rewards</h3>
+                    <p>Dapatkan reward harian berupa World Lock, Diamond Lock, dan item-item rare secara gratis setiap hari!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>WhatsApp Group</h3>
+                    <p>Bergabung dengan grup WhatsApp resmi untuk update terbaru, tips, dan diskusi dengan sesama pemain!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎭</div>
+                    <h3>Discord Community</h3>
+                    <p>Komunitas Discord yang aktif dengan channel khusus untuk trading, event, dan voice chat bareng teman!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌟</div>
+                    <h3>Custom Features</h3>
+                    <p>Fitur-fitur eksklusif seperti /warp, /home, fast drop, dan masih banyak lagi yang tidak ada di server lain!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📞</div>
+                    <h3>Support 24/7</h3>
+                    <p>Tim support yang siap membantu kapan saja. Ada masalah? Langsung hubungi moderator di Discord!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Links Section -->
+    <section class="links" id="links">
+        <div class="container">
+            <h2 class="section-title">Join Komunitas Kami</h2>
+            <div class="links-grid">
+                <div class="link-card">
+                    <div style="font-size: 4rem; margin-bottom: 1rem; color: #25D366;">📱</div>
+                    <h3 style="color: #25D366; margin-bottom: 1rem; font-size: 1.5rem;">WhatsApp Group</h3>
+                    <p style="color: #ccc; margin-bottom: 1.5rem;">Bergabung dengan grup WhatsApp resmi untuk update, tips, dan diskusi!</p>
+                    <a href="https://wa.me/your-whatsapp-link" target="_blank" class="wa-btn" style="background: #25D366; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-weight: bold; transition: all 0.3s ease; display: inline-block;">Join WhatsApp Group</a>
+                </div>
+                <div class="link-card">
+                    <div style="font-size: 4rem; margin-bottom: 1rem; color: #5865F2;">🎮</div>
+                    <h3 style="color: #5865F2; margin-bottom: 1rem; font-size: 1.5rem;">Discord Server</h3>
+                    <p style="color: #ccc; margin-bottom: 1.5rem;">Komunitas Discord aktif dengan event, trading, dan voice chat!</p>
+                    <a href="https://discord.gg/your-discord-link" target="_blank" class="discord-btn" style="background: #5865F2; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-weight: bold; transition: all 0.3s ease; display: inline-block;">Join Discord Server</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download" id="download">
+        <div class="container">
+            <h2 class="section-title">Download Game</h2>
+            <p>Download client NixPS dan mulai petualanganmu sekarang juga!</p>
+            
+            <div class="download-cards">
+                <div class="download-card">
+                    <h3>🪟 Windows</h3>
+                    <p>Compatible dengan Windows 7, 8, 10, dan 11</p>
+                    <p><strong>Size:</strong> 45.2 MB</p>
+                    <a href="#" class="download-btn">Download untuk Windows</a>
+                </div>
+                <div class="download-card">
+                    <h3>🤖 Android</h3>
+                    <p>Untuk Android 5.0 ke atas</p>
+                    <p><strong>Size:</strong> 38.7 MB</p>
+                    <a href="#" class="download-btn">Download untuk Android</a>
+                </div>
+                <div class="download-card">
+                    <h3>🍎 iOS</h3>
+                    <p>Untuk iOS 12.0 ke atas</p>
+                    <p><strong>Size:</strong> 42.1 MB</p>
+                    <a href="#" class="download-btn">Download untuk iOS</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>NixPS Server</h3>
+                    <p>Private server Growtopia terbaik di Indonesia dengan komunitas yang aktif dan fitur-fitur menarik.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <p><a href="#download">Download</a></p>
+                    <p><a href="#links">Community</a></p>
+                    <p><a href="#features">Features</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <p><a href="#">Tutorial</a></p>
+                    <p><a href="#">FAQ</a></p>
+                    <p><a href="#">Rules</a></p>
+                    <p><a href="#">Contact</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <p><a href="https://wa.me/your-whatsapp-link">WhatsApp</a></p>
+                    <p><a href="https://discord.gg/your-discord-link">Discord</a></p>
+                    <p><a href="#">Instagram</a></p>
+                    <p><a href="#">YouTube</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 NixPS Private Server. Made with ❤️ for Indonesian Growtopians</p>
+                <p>Not affiliated with Growtopia or Ubisoft. This is a fan-made private server.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loading screen
+        window.addEventListener('load', function() {
+            const loading = document.getElementById('loading');
+            setTimeout(() => {
+                loading.classList.add('hidden');
+            }, 1000);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for scroll animations
+        document.querySelectorAll('.feature-card, .link-card, .download-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.8s ease';
+            observer.observe(el);
+        });
+
+        // Add hover effects for link cards
+        document.querySelectorAll('.link-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+                if (this.querySelector('h3').style.color === 'rgb(37, 211, 102)') {
+                    this.style.borderColor = '#25D366';
+                    this.style.boxShadow = '0 20px 40px rgba(37, 211, 102, 0.3)';
+                } else {
+                    this.style.borderColor = '#5865F2';
+                    this.style.boxShadow = '0 20px 40px rgba(88, 101, 242, 0.3)';
+                }
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                if (this.querySelector('h3').style.color === 'rgb(37, 211, 102)') {
+                    this.style.borderColor = 'rgba(37, 211, 102, 0.3)';
+                } else {
+                    this.style.borderColor = 'rgba(88, 101, 242, 0.3)';
+                }
+                this.style.boxShadow = 'none';
+            });
+        });
+
+        // Add button hover effects
+        document.querySelectorAll('.wa-btn, .discord-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+                if (this.classList.contains('wa-btn')) {
+                    this.style.boxShadow = '0 5px 15px rgba(37, 211, 102, 0.5)';
+                } else {
+                    this.style.boxShadow = '0 5px 15px rgba(88, 101, 242, 0.5)';
+                }
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = 'none';
+            });
+        });
+
+        // Header background on scroll
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY > 100) {
+                header.style.background = 'rgba(26, 26, 46, 0.95)';
+                header.style.transform = lastScrollY > currentScrollY ? 'translateY(0)' : 'translateY(-100%)';
+            } else {
+                header.style.background = 'rgba(26, 26, 46, 0.9)';
+                header.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollY = currentScrollY;
+        });
+
+        // Mobile menu toggle (if needed)
+        const mobileMenuToggle = document.createElement('button');
+        mobileMenuToggle.innerHTML = '☰';
+        mobileMenuToggle.style.cssText = `
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        `;
+
+        // Add mobile menu functionality
+        if (window.innerWidth <= 768) {
+            const nav = document.querySelector('nav');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuToggle.style.display = 'block';
+            nav.appendChild(mobileMenuToggle);
